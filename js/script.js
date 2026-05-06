@@ -40,6 +40,43 @@ if (themeToggle) {
     themeToggle.addEventListener('click', toggleTheme);
 }
 
+const navbarToggle = document.getElementById('navbarToggle');
+const navbarMenu = document.getElementById('navbarMenu');
+
+function closeNavbarMenu() {
+    if (!navbarMenu || !navbarToggle) return;
+    navbarMenu.classList.remove('open');
+    navbarToggle.setAttribute('aria-expanded', 'false');
+    navbarToggle.setAttribute('aria-label', 'Open navigation');
+    document.body.classList.remove('nav-open');
+}
+
+function toggleNavbarMenu() {
+    if (!navbarMenu || !navbarToggle) return;
+    const isOpen = navbarMenu.classList.toggle('open');
+    navbarToggle.setAttribute('aria-expanded', String(isOpen));
+    navbarToggle.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+    document.body.classList.toggle('nav-open', isOpen);
+}
+
+if (navbarToggle) {
+    navbarToggle.addEventListener('click', toggleNavbarMenu);
+}
+
+// Close mobile menu after a nav link click
+if (navbarMenu) {
+    navbarMenu.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', closeNavbarMenu);
+    });
+}
+
+// Close mobile menu on desktop resize
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+        closeNavbarMenu();
+    }
+});
+
 // Initialize theme on page load
 document.addEventListener('DOMContentLoaded', initializeTheme);
 
